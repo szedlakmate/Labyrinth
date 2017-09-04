@@ -60,22 +60,6 @@ var waitingForInput = false;
 // Mapping for key events
 var keyMap = {37:"left", 38:"up", 39:"right", 40:"down", 13:"enter", 82:"r", 27:"esc"};
 
-/********************************************
-function segmentate(array, colNum = 7){
-    let arrayCopy = array.slice();
-    let segmentatedArray = [], col = [];
-    for (let rowNum = 0; rowNum < Math.ceil(array.length/colNum); rowNum++){
-        col = [];
-        for (let i = 0; i< colNum; i++){
-            if (arrayCopy.length){
-                col.push(arrayCopy.shift());
-            }
-        }
-        segmentatedArray.push(col);
-    }
-    return segmentatedArray;
-}
-********************************************/
 
 // Drawing players
 function setPlayers(players){
@@ -100,7 +84,8 @@ function setPlayers(players){
 // Moving HTML elements
 function stepDirection(element, dx, dy){
     // baseScale is not 0 because of the cell margin
-    let baseScaleX = 102.5, baseScaleY= 104.5; 
+    //let baseScaleX = 102.5, baseScaleY= 104.5; 
+    let baseScaleX = 100, baseScaleY= 100; 
     // Current translation values
     let shift = [0,0];
     if (element.style.transform.match(/[+-]?\d+(\.\d+)?/g)) {

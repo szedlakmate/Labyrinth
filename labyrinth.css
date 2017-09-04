@@ -14,82 +14,82 @@ h1 {
 	text-align: center;
 }
 
-#board {
-	width: 30%;
-	/*border-collapse: collapse;*/
 
-	margin: 0 auto;
+.obj-wrapper {
+	position:relative;
+	width:100%;
+	padding-bottom:30%;
+	height:0;
+	overflow:hidden;
+}
+
+#board {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 30%;
+	height: 100%;
 	padding: 0;
+	margin: 0;
 	table-layout: fixed;
 	display: inline-table;
-	margin-left: 12%;
 }
 
 #free {
+	position: absolute;
+	left: 80%;
+	transform: translateX(-50%);
 	width: calc(30%/7);
+	height: calc(100%/7);
 	padding: 0;
 	table-layout: fixed;
-	display: inline-table;
-	margin-left: 10%;
 	transition: all 0.3s; 
 }
 
 
-td {
+td.mazetile {
 	width: calc(100%/7);
-	position: relative;
-	text-align: center;
-	vertical-align: middle;
-	/*padding-bottom: calc(30%/7);
-	height: 0;*/
+	height: calc(100%/7);
+
 }
 
-td::after {
-	visibility: hidden;
-	content: "\200b";
-	text-align: center;
-	vertical-align: middle;
-	display: block;
-	margin-top: 20%;
-	margin-bottom: 20%;
-}
-
-.mazeTile {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-}
 
 div {
-	transition: all 0.3s; 
-
+	position: relative;
 	width: 100%;
 	height: 100%;
-	font-family: "Times New Roman";
-	font-size: 150%;
-	position: absolute;
 	left: 0;
 	top: 0;
+	margin: 0;
+}
+
+div.player {	
+	font-family: "Times New Roman";
+	font-size: 100%;
+	position: absolute;
+	transition: all 0.3s; 
 }
 
 div#green {
 	color: green;
 	z-index: 1;
+	background-color: rgba(0,255,0,0.5);
 }
 
 div#yellow {
 	color: yellow;
 	z-index: 2;
+	background-color: rgba(0,0,0,0.5);
 }
 
 div#red {
 	color: red;
 	z-index: 3;
+	background-color: rgba(255,0,0,0.5);
 }
 
 div#blue {
 	color: blue;
 	z-index: 4;
+	background-color: rgba(0,0,255,0.5);
 }
