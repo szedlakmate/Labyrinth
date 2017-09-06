@@ -8,82 +8,85 @@
 <body>
 	<h1>Labirinth</h1>
 	<span>Menu</span>
-	<table id="board">
-		<tr>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-		</tr>
-		<tr>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-		</tr>
-		<tr>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-		</tr>
-		<tr>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td>
-				<div class="mazeTile"></div>
-				<div id="green"></div>
-				<div id="red"></div>
-				<div id="blue"></div>
-				<div id="yellow"></div>
-			</td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-		</tr>
-		<tr>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-		</tr>
-		<tr>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-		</tr>
-		<tr>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-			<td><div class="mazeTile"></div></td>
-		</tr>
-	</table>
-	<table id="free">
-		<tr>
-			<td><div class="freeTile"></td>
-		</tr>
-	</table>
+	<div class="obj-wrapper">
+		<table id="board">
+			<tr>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+			</tr>
+			<tr>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+			</tr>
+			<tr>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+			</tr>
+			<tr>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile">
+					<div id="origin">
+						<div id="green" class="player"></div>
+						<div id="red" class="player"></div>
+						<div id="blue" class="player"></div>
+						<div id="yellow" class="player"></div>
+					</div>
+				</td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+			</tr>
+			<tr>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+			</tr>
+			<tr>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+			</tr>
+			<tr>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+			</tr>
+		</table>
+		<table id="free">
+			<tr>
+				<td><div class="freeTile"></td>
+			</tr>
+		</table>
+	</div>
 	<script src='labyrinth.js'></script>
 </body>
 </html>
