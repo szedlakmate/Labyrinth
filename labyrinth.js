@@ -83,8 +83,6 @@ function setPlayers(players){
 
 // Moving HTML elements
 function stepDirection(element, dx, dy){
-    // baseScale is not 0 because of the cell margin
-    //let baseScaleX = 102.5, baseScaleY= 104.5; 
     let baseScaleX = 100, baseScaleY= 100; 
     // Current translation values
     let shift = [0,0];
@@ -137,13 +135,17 @@ function checkStep(playerHTML, actualPlayer, dx, dy, maxCoord = 6){
 return false;
 }
 
+function drawCellGrid(cell, color = "rgba(239, 239, 239, 0.4)"){
+    cell.style.boxShadow = color + " 1px 0px 0px inset, " + color + " 0px 1px 0px inset, " + color + " -1px 0px 0px inset, " + color + " 0px -1px 0px inset";
+}
+
 
 function drawSide(cell, side, color = "rgb(0, 0, 0)") {
     // cell: querySelector of the managable cell
     // side: [0, -1] aka [+left-right, +top-bottom]
 
     let borderWidth = 5; //px
-    if (!cell.style.boxShadow){
+    if (false/*!cell.style.boxShadow*/){
         cell.style.boxShadow = color + " " + side[0]*borderWidth + "px " + side[1]*borderWidth + "px " + "0px inset";
     } else {
         cell.style.boxShadow += ", "+ color + " " + side[0]*borderWidth + "px " + side[1]*borderWidth + "px " + "0px inset";
@@ -153,6 +155,9 @@ function drawSide(cell, side, color = "rgb(0, 0, 0)") {
 function reDraw(){
     for (let row = 0; row<7; row++) {
         for (let col = 0; col < 7; col++) {
+            // Draw extra grid since the border-spacing is 0
+            drawCellGrid(board.rows[row].cells[col]);
+            // Draw walls as borders
             if (tiles[map[row][col]][0] === 1) drawSide(board.rows[row].cells[col], [ 0, 1]);
             if (tiles[map[row][col]][1] === 1) drawSide(board.rows[row].cells[col], [-1, 0]);
             if (tiles[map[row][col]][2] === 1) drawSide(board.rows[row].cells[col], [ 0,-1]);
