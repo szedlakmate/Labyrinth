@@ -145,7 +145,7 @@ function drawSide(cell, side, color = "rgb(0, 0, 0)") {
     // side: [0, -1] aka [+left-right, +top-bottom]
 
     let borderWidth = 5; //px
-    if (false/*!cell.style.boxShadow*/){
+    if (!cell.style.boxShadow){
         cell.style.boxShadow = color + " " + side[0]*borderWidth + "px " + side[1]*borderWidth + "px " + "0px inset";
     } else {
         cell.style.boxShadow += ", "+ color + " " + side[0]*borderWidth + "px " + side[1]*borderWidth + "px " + "0px inset";
