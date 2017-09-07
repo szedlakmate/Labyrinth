@@ -61,23 +61,19 @@ var waitingForInput = false;
 var keyMap = {37:"left", 38:"up", 39:"right", 40:"down", 13:"enter", 82:"r", 27:"esc"};
 
 
-// Drawing players
+// Setting players startes position
 function setPlayers(players){
-    let starterPosX = 3, starterPosY = 3, playerSign = String.fromCharCode(9673);
+    let starterPosX = 3, starterPosY = 3;
 
-    green.innerText = playerSign;
     stepDirection(green, playerCoords[0][0]-starterPosX, playerCoords[0][1]-starterPosY);
     if (players<2) return;
 
-    yellow.innerText = playerSign;
     stepDirection(yellow, playerCoords[1][0]-starterPosX, playerCoords[1][1]-starterPosY);
     if (players<3) return;
 
-    red.innerText = playerSign;
     stepDirection(red, playerCoords[2][0]-starterPosX, playerCoords[2][1]-starterPosY);
     if (players<4) return;
 
-    blue.innerText = playerSign;
     stepDirection(blue, playerCoords[3][0]-starterPosX, playerCoords[3][1]-starterPosY);
 }
 
