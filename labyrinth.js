@@ -4,12 +4,17 @@
 
 
 // Selectors for the board table, the free-tile-cell and the players' figures
+// tables
 var board = document.getElementById("board");
 var freeBoard = document.getElementById("free");
+// players
 var green = document.querySelector("#green");
 var yellow = document.querySelector("#yellow");
 var red = document.querySelector("#red");
 var blue = document.querySelector("#blue");
+// texts
+var insertText = document.querySelector("#insert");
+var stepText = document.querySelector("#step");
 
 // Mapping the tiles to the board
 // Modifying the table should be handled here. Furthermore the table is set to be a constant.
@@ -19,7 +24,11 @@ var map = [[0, 16, 1, 17, 2, 18, 3],
 [29, 30, 31, 32, 33, 34, 35], 
 [8, 36, 9, 37, 10, 38, 11], 
 [39, 40, 41, 42, 43, 44, 45], 
-[12, 46, 13, 47, 14, 48, 15]];
+[12, 46, 13, 47, 14, 48, 15],
+[49]];
+
+// Defining possible insertionpoints for the free tile 
+const dragPoints = ["0-1","0-3","0-5","1-0","1-6","3-0","3-6","5-0","5-6","6-1","6-3","6-5"];
 
 // Fixed tiles of the original game
 const fixedTiles = [[1,0,0,1,null], [1,0,0,0,null], [1,0,0,0,null], [1,1,0,0,null],
@@ -36,7 +45,7 @@ const movingTiles = [[1,0,1,0,null],[0,1,0,1,null],[1,0,0,0,null],[1,0,0,1,null]
 [1,0,1,0,null],[1,0,0,1,null],[0,1,0,1,null],[1,0,0,1,null],[1,0,0,1,null],
 [1,0,0,1,null],[0,1,0,1,null],[1,0,0,1,null],[1,0,1,0,null],[0,1,0,1,null],
 [1,0,0,1,null],[1,0,0,1,null],[1,0,0,1,null],[1,0,0,1,null],[1,0,0,1,null],
-[0,1,0,1,null],[1,0,0,1,null],[1,0,1,0,null]];
+[0,1,0,1,null],[1,0,0,1,null],[1,0,1,0,null],[1,0,1,0,null]];
 
 // Combined tiles for mapping
 const tiles = fixedTiles.concat(shuffle(rotateRandom(movingTiles)));
@@ -54,8 +63,13 @@ var playerTurn = 0;
 // Coordinates of the players on the 7x7 board
 var playerCoords = [[0,0],[6,0],[6,6],[0,6]];
 
-// Controlls keyread behavior
-var waitingForInput = false;
+// Controlls keyread behavior *************************************** WRRRRRROOOOOOOOOOOONNNNNNNNNGGGGGGGGG
+var canStep = false;
+
+// Controlls insrertion behavior
+var canInsert = false;
+//******************************************************
+
 
 // Mapping for key events
 var keyMap = {37:"left", 38:"up", 39:"right", 40:"down", 13:"enter", 82:"r", 27:"esc"};
@@ -83,11 +97,11 @@ function stepDirection(element, dx, dy){
     // Current translation values
     let shift = [0,0];
     if (element.style.transform.match(/[+-]?\d+(\.\d+)?/g)) {
-       shift = element.style.transform.match(/[+-]?\d+(\.\d+)?/g).map(function(v) { return parseFloat(v); });
-   }
+     shift = element.style.transform.match(/[+-]?\d+(\.\d+)?/g).map(function(v) { return parseFloat(v); });
+ }
 
-   element.style.transform = "translate(" + (shift[0]+ dx*baseScaleX) + "%, " + (shift[1] + dy*baseScaleY) + "%)";
-   return element.style.transform;
+ element.style.transform = "translate(" + (shift[0]+ dx*baseScaleX) + "%, " + (shift[1] + dy*baseScaleY) + "%)";
+ return element.style.transform;
 }
 
 // Check whether a step is legal or not. 
@@ -131,7 +145,7 @@ function checkStep(playerHTML, actualPlayer, dx, dy, maxCoord = 6){
 return false;
 }
 
-function drawCellGrid(cell, color = "rgba(239, 239, 239, 0.4)"){
+function drawCellGrid(cell, color = "rgba(229, 229, 229, 0.75)"){
     cell.style.boxShadow = color + " 1px 0px 0px inset, " + color + " 0px 1px 0px inset, " + color + " -1px 0px 0px inset, " + color + " 0px -1px 0px inset";
 }
 
@@ -161,10 +175,11 @@ function reDraw(){
         }
     } 
 
-    if (tiles[tiles.length-1][0] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0, 1]);
-    if (tiles[tiles.length-1][1] === 1) drawSide(freeBoard.rows[0].cells[0], [-1, 0]);
-    if (tiles[tiles.length-1][2] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0,-1]);
-    if (tiles[tiles.length-1][3] === 1) drawSide(freeBoard.rows[0].cells[0], [ 1, 0]);
+    // Drawing walls on the free tile
+    if (tiles[map[7][0]][0] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0, 1]);
+    if (tiles[map[7][0]][1] === 1) drawSide(freeBoard.rows[0].cells[0], [-1, 0]);
+    if (tiles[map[7][0]][2] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0,-1]);
+    if (tiles[map[7][0]][3] === 1) drawSide(freeBoard.rows[0].cells[0], [ 1, 0]);
 }
 
 
@@ -192,51 +207,95 @@ function rotateRandom(array){
 
 // Rotating free tile clockwise
 function rotate(){
-    // Visually rotating
+    // Visually rotate
     let rotation = 0;
     if (freeBoard.style.transform.match(/\d+/g)) {
-       rotation = freeBoard.style.transform.match(/\d+/g).map(function(v) { return Number(v); });
-    }
-    rotation = Number(rotation) + 90;
-    if (rotation+90 == Infinity) rotation = 0;
+     rotation = freeBoard.style.transform.match(/\d+/g).map(function(v) { return Number(v); });
+ }
+ rotation = Number(rotation) + 90;
+ if (rotation+90 == Infinity) rotation = 0;
 
-    freeBoard.style.transform = "rotate(" + rotation + "deg)";
-    
-    // Logically rotating
+ freeBoard.style.transform = "rotate(" + rotation + "deg)";
+
+    // Logically rotate
+    let temp = tiles[map[7][0]][0];
+    tiles[map[7][0]][0] = tiles[map[7][0]][3];
+    tiles[map[7][0]][3] = tiles[map[7][0]][2];
+    tiles[map[7][0]][2] = tiles[map[7][0]][1];
+    tiles[map[7][0]][1] = temp;
 }
 
 // Controls the keypress events by calling the controllGame function in if needed
 function checkKey(e) {
-    if (waitingForInput){
+    if (true/*waitingForInput*/){
         e = e || window.event;
         if (keyMap[e.keyCode]) controllGame(keyMap[e.keyCode]);
     }
 }
 
+// Listener for insertion points
+function setInsertionListener(dragPoints){
+    for (let row = 0; row<7; row++) {
+        for (let col = 0; col < 7; col++) {
+            // Setting uplistener for inserting tile
+            if (dragPoints.indexOf(row.toString()+"-"+col)>=0) {
+                board.rows[row].cells[col].addEventListener("click", moveCheck);         
+            }
+        }
+    } 
+}
+
+function moveCheck(){
+    if (canInsert){
+        console.log("Inserted");
+        put();
+    }
+}
+
 function put(){
+    // Visually move tiles
+
+    //Logically move tiles
+
+    // Proceeding to the next issue in game flow
+    changeGameFlow("step");
+    /*
+    canStep = true;
+    canInsert = false;*/
+}
+
+function startGame(player){
+    // Starting gameplay   
+    canInsert = true;
+    canStep = false;
+    insertText.classList.add("selected");
+}
+
+function changeGameFlow(command){
+    switch (command){
+        case "insert":
+        playerTurn++;
+        canStep = false;
+        canInsert = true;
+        insertText.classList.add("selected");
+        stepText.classList.remove("selected");
+        break;
+
+        case "step":
+        canStep = true;
+        canInsert = false;
+        insertText.classList.remove("selected");
+        stepText.classList.add("selected");
+        break;
+
+        default:
+        console.log("Command not found");
+        break;
+    }
 
 }
 
-function step(player){
-    waitingForInput = true;
-}
 
-function turn(player){
-    put();
-    
-    waitingForInput = true;
-}
-
-// *********************************** MAIN *********************************
-reDraw();
-
-setPlayers(playerNum);
-
-document.onkeydown = checkKey;
-
-// STANDING ON THE SAME SPOT BUG HANDLING! 
-
-// *********************************** LOOP ******************************
 function controllGame(keyPressed){
     let player;
     switch (playerTurn%playerNum){
@@ -259,29 +318,27 @@ function controllGame(keyPressed){
 
     switch (keyPressed){
         case "up":
-        checkStep(player, playerTurn%playerNum, 0, -1);
+        if (canStep) checkStep(player, playerTurn%playerNum, 0, -1);
         break;
 
         case "down":
-        checkStep(player, playerTurn%playerNum, 0, 1);
+        if (canStep) checkStep(player, playerTurn%playerNum, 0, 1);
         break;
 
         case "left":
-        checkStep(player, playerTurn%playerNum, -1, 0);
+        if (canStep) checkStep(player, playerTurn%playerNum, -1, 0);
         break;
 
         case "right":
-        checkStep(player, playerTurn%playerNum, 1, 0);
+        if (canStep) checkStep(player, playerTurn%playerNum, 1, 0);
         break;
 
         case "enter":
-        waitingForInput = false;
-        playerTurn++;
-        turn();
+        if (canStep) changeGameFlow("insert");
         break;
 
         case "r":
-        rotate();
+        if (canInsert) rotate();
         break;
     }
 
@@ -289,4 +346,15 @@ function controllGame(keyPressed){
 
 }
 
-turn();
+// *********************************** MAIN *********************************
+reDraw();
+
+setPlayers(playerNum);
+
+document.onkeydown = checkKey;
+
+setInsertionListener(dragPoints);
+
+startGame();
+
+// STANDING ON THE SAME SPOT BUG HANDLING! 
