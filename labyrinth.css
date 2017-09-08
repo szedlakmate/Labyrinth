@@ -44,12 +44,7 @@ h1 {
 	left: 78%;
 	width: calc(30%/7);
 	height: calc(100%/7);
-	padding: 0;
-	table-layout: fixed; 
-}
-
-.freeTile {
-	transition: all 0.3s;
+	padding: 0; 
 }
 
 .mazeTile {

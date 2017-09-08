@@ -98,11 +98,11 @@ function stepDirection(element, dx, dy){
     // Current translation values
     let shift = [0,0];
     if (element.style.transform.match(/[+-]?\d+(\.\d+)?/g)) {
-       shift = element.style.transform.match(/[+-]?\d+(\.\d+)?/g).map(function(v) { return parseFloat(v); });
-   }
+     shift = element.style.transform.match(/[+-]?\d+(\.\d+)?/g).map(function(v) { return parseFloat(v); });
+ }
 
-   element.style.transform = "translate(" + (shift[0]+ dx*baseScaleX) + "%, " + (shift[1] + dy*baseScaleY) + "%)";
-   return element.style.transform;
+ element.style.transform = "translate(" + (shift[0]+ dx*baseScaleX) + "%, " + (shift[1] + dy*baseScaleY) + "%)";
+ return element.style.transform;
 }
 
 // Check whether a step is legal or not. 
@@ -152,8 +152,7 @@ function drawCellGrid(cell, color = "rgba(229, 229, 229, 0.75)"){
 
 
 function drawSide(cell, side, color = "rgb(0, 0, 0)") {
-    // side: ***depends*** be very careful. This function is buggy 
-    // generally [0, -1] => [+left-right, +top-bottom] 
+    // side: [0, -1] => [+left-right, +top-bottom] 
 
     let borderWidth = 5; //px
 
@@ -188,13 +187,6 @@ function reDraw() {
     if (tiles[map[7][0]][1] === 1) drawSide(freeBoard.rows[0].cells[0], [-1, 0]);
     if (tiles[map[7][0]][2] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0,-1]);
     if (tiles[map[7][0]][3] === 1) drawSide(freeBoard.rows[0].cells[0], [ 1, 0]);    
-
-/*
-    if (tiles[map[7][0]][0] === 1) drawSide(freeBoard.rows[0].cells[0], [ 1, 0]);
-    if (tiles[map[7][0]][1] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0, 1]);
-    if (tiles[map[7][0]][2] === 1) drawSide(freeBoard.rows[0].cells[0], [-1, 0]);
-    if (tiles[map[7][0]][3] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0,-1]);
-    */
 }
 
 
@@ -206,6 +198,9 @@ function setAnimation(animate = true){
             } else board.rows[row].cells[col].classList.remove("animate");
         }
     }
+    if (animate) {
+        freeBoard.rows[0].cells[0].classList.add("animate");
+    } else freeBoard.rows[0].cells[0].classList.remove("animate");
 }
 
 
@@ -236,12 +231,12 @@ function rotate(){
     // Visually rotate
     let rotation = 0;
     if (freeBoard.rows[0].cells[0].style.transform.match(/\d+/g)) {
-       rotation = freeBoard.rows[0].cells[0].style.transform.match(/\d+/g).map(function(v) { return Number(v); });
-   }
-   rotation = Number(rotation) + 90;
-   if (rotation+90 == Infinity) rotation = 0;
+     rotation = freeBoard.rows[0].cells[0].style.transform.match(/\d+/g).map(function(v) { return Number(v); });
+ }
+ rotation = Number(rotation) + 90;
+ if (rotation+90 == Infinity) rotation = 0;
 
-   freeBoard.rows[0].cells[0].style.transform = "rotate(" + rotation + "deg)";
+ freeBoard.rows[0].cells[0].style.transform = "rotate(" + rotation + "deg)";
 
     // Logically rotate
     let temp = tiles[map[7][0]][0];
@@ -253,8 +248,8 @@ function rotate(){
 
 // Controls the keypress events by calling the controllGame function in if needed
 function checkKey(e) {
-        e = e || window.event;
-        if (keyMap[e.keyCode]) controllGame(keyMap[e.keyCode]);
+    e = e || window.event;
+    if (keyMap[e.keyCode]) controllGame(keyMap[e.keyCode]);
 }
 
 // Listener for insertion points
@@ -449,3 +444,4 @@ startGame();
 // STANDING ON THE SAME SPOT BUG HANDLING! 
 
 console.log("Delete 'Menu'");
+console.log("Implement the animateclass togle for freeTile");
