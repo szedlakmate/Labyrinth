@@ -48,7 +48,7 @@ const movingTiles = [[1,0,1,0,null],[0,1,0,1,null],[1,0,0,0,null],[1,0,0,1,null]
 [0,1,0,1,null],[1,0,0,1,null],[1,0,1,0,null],[1,0,1,0,null]];
 
 // Combined tiles for mapping
-const tiles = fixedTiles.concat(shuffle(rotateRandom(movingTiles)));
+var tiles = fixedTiles.concat(shuffle(rotateRandom(movingTiles)));
 
 // Game controller variable
 var endGame = false;
@@ -152,7 +152,8 @@ function drawCellGrid(cell, color = "rgba(229, 229, 229, 0.75)"){
 
 
 function drawSide(cell, side, color = "rgb(0, 0, 0)") {
-    // side: [0, -1] => [+left-right, +top-bottom]
+    // side: ***depends*** be very careful. This function is buggy 
+    // generally [0, -1] => [+left-right, +top-bottom] 
 
     let borderWidth = 5; //px
 
@@ -163,8 +164,8 @@ function drawSide(cell, side, color = "rgb(0, 0, 0)") {
     }
 };
 
-function reDraw(){
-    for (let row = 0; row<7; row++) {
+function reDraw() {
+    for (let row = 0; row < 7; row++) {
         for (let col = 0; col < 7; col++) {
             // Set translations to zero
             board.rows[row].cells[col].style.transform = "";
@@ -180,11 +181,20 @@ function reDraw(){
     } 
 
     // Drawing walls on the free tile
+    freeBoard.rows[0].cells[0].style.transform = "";
     freeBoard.rows[0].cells[0].style.boxShadow = "";
+
     if (tiles[map[7][0]][0] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0, 1]);
     if (tiles[map[7][0]][1] === 1) drawSide(freeBoard.rows[0].cells[0], [-1, 0]);
     if (tiles[map[7][0]][2] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0,-1]);
-    if (tiles[map[7][0]][3] === 1) drawSide(freeBoard.rows[0].cells[0], [ 1, 0]);
+    if (tiles[map[7][0]][3] === 1) drawSide(freeBoard.rows[0].cells[0], [ 1, 0]);    
+
+/*
+    if (tiles[map[7][0]][0] === 1) drawSide(freeBoard.rows[0].cells[0], [ 1, 0]);
+    if (tiles[map[7][0]][1] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0, 1]);
+    if (tiles[map[7][0]][2] === 1) drawSide(freeBoard.rows[0].cells[0], [-1, 0]);
+    if (tiles[map[7][0]][3] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0,-1]);
+    */
 }
 
 
@@ -225,13 +235,13 @@ function rotateRandom(array){
 function rotate(){
     // Visually rotate
     let rotation = 0;
-    if (freeBoard.style.transform.match(/\d+/g)) {
-       rotation = freeBoard.style.transform.match(/\d+/g).map(function(v) { return Number(v); });
+    if (freeBoard.rows[0].cells[0].style.transform.match(/\d+/g)) {
+       rotation = freeBoard.rows[0].cells[0].style.transform.match(/\d+/g).map(function(v) { return Number(v); });
    }
    rotation = Number(rotation) + 90;
    if (rotation+90 == Infinity) rotation = 0;
 
-   freeBoard.style.transform = "rotate(" + rotation + "deg)";
+   freeBoard.rows[0].cells[0].style.transform = "rotate(" + rotation + "deg)";
 
     // Logically rotate
     let temp = tiles[map[7][0]][0];
