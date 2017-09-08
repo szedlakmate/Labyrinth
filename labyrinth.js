@@ -151,12 +151,12 @@ function drawCellGrid(cell, color = "rgba(229, 229, 229, 0.75)"){
 }
 
 
-function drawSide(cell, side, reset = false, color = "rgb(0, 0, 0)") {
-    // cell: querySelector of the managable cell
-    // side: [0, -1] aka [+left-right, +top-bottom]
+function drawSide(cell, side, color = "rgb(0, 0, 0)") {
+    // side: [0, -1] => [+left-right, +top-bottom]
 
     let borderWidth = 5; //px
-    if (!cell.style.boxShadow || reset){
+
+    if (!cell.style.boxShadow){
         cell.style.boxShadow = color + " " + side[0]*borderWidth + "px " + side[1]*borderWidth + "px " + "0px inset";
     } else {
         cell.style.boxShadow += ", "+ color + " " + side[0]*borderWidth + "px " + side[1]*borderWidth + "px " + "0px inset";
@@ -168,6 +168,7 @@ function reDraw(){
         for (let col = 0; col < 7; col++) {
             // Set translations to zero
             board.rows[row].cells[col].style.transform = "";
+            board.rows[row].cells[col].style.boxShadow = "";
             // Draw extra grid since the border-spacing is 0
             drawCellGrid(board.rows[row].cells[col]);
             // Draw walls as borders
@@ -179,7 +180,8 @@ function reDraw(){
     } 
 
     // Drawing walls on the free tile
-    if (tiles[map[7][0]][0] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0, 1], true);
+    freeBoard.rows[0].cells[0].style.boxShadow = "";
+    if (tiles[map[7][0]][0] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0, 1]);
     if (tiles[map[7][0]][1] === 1) drawSide(freeBoard.rows[0].cells[0], [-1, 0]);
     if (tiles[map[7][0]][2] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0,-1]);
     if (tiles[map[7][0]][3] === 1) drawSide(freeBoard.rows[0].cells[0], [ 1, 0]);
@@ -215,7 +217,7 @@ function shuffle(array) {
 }
 
 function rotateRandom(array){
-    // Should randomly rotate the tiles XXX NEED TO BE FIXED
+    // Should randomly rotate the tiles !!! NEED TO BE FIXED
     return array
 }
 
@@ -241,10 +243,8 @@ function rotate(){
 
 // Controls the keypress events by calling the controllGame function in if needed
 function checkKey(e) {
-    if (true/*waitingForInput*/){
         e = e || window.event;
         if (keyMap[e.keyCode]) controllGame(keyMap[e.keyCode]);
-    }
 }
 
 // Listener for insertion points
