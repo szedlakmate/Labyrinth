@@ -68,6 +68,7 @@ var canStep = false;
 
 // Controlls insrertion behavior
 var canInsert = false;
+
 //******************************************************
 
 
@@ -97,11 +98,11 @@ function stepDirection(element, dx, dy){
     // Current translation values
     let shift = [0,0];
     if (element.style.transform.match(/[+-]?\d+(\.\d+)?/g)) {
-     shift = element.style.transform.match(/[+-]?\d+(\.\d+)?/g).map(function(v) { return parseFloat(v); });
- }
+       shift = element.style.transform.match(/[+-]?\d+(\.\d+)?/g).map(function(v) { return parseFloat(v); });
+   }
 
- element.style.transform = "translate(" + (shift[0]+ dx*baseScaleX) + "%, " + (shift[1] + dy*baseScaleY) + "%)";
- return element.style.transform;
+   element.style.transform = "translate(" + (shift[0]+ dx*baseScaleX) + "%, " + (shift[1] + dy*baseScaleY) + "%)";
+   return element.style.transform;
 }
 
 // Check whether a step is legal or not. 
@@ -150,12 +151,12 @@ function drawCellGrid(cell, color = "rgba(229, 229, 229, 0.75)"){
 }
 
 
-function drawSide(cell, side, color = "rgb(0, 0, 0)") {
+function drawSide(cell, side, reset = false, color = "rgb(0, 0, 0)") {
     // cell: querySelector of the managable cell
     // side: [0, -1] aka [+left-right, +top-bottom]
 
     let borderWidth = 5; //px
-    if (!cell.style.boxShadow){
+    if (!cell.style.boxShadow || reset){
         cell.style.boxShadow = color + " " + side[0]*borderWidth + "px " + side[1]*borderWidth + "px " + "0px inset";
     } else {
         cell.style.boxShadow += ", "+ color + " " + side[0]*borderWidth + "px " + side[1]*borderWidth + "px " + "0px inset";
@@ -165,6 +166,8 @@ function drawSide(cell, side, color = "rgb(0, 0, 0)") {
 function reDraw(){
     for (let row = 0; row<7; row++) {
         for (let col = 0; col < 7; col++) {
+            // Set translations to zero
+            board.rows[row].cells[col].style.transform = "";
             // Draw extra grid since the border-spacing is 0
             drawCellGrid(board.rows[row].cells[col]);
             // Draw walls as borders
@@ -176,10 +179,21 @@ function reDraw(){
     } 
 
     // Drawing walls on the free tile
-    if (tiles[map[7][0]][0] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0, 1]);
+    if (tiles[map[7][0]][0] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0, 1], true);
     if (tiles[map[7][0]][1] === 1) drawSide(freeBoard.rows[0].cells[0], [-1, 0]);
     if (tiles[map[7][0]][2] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0,-1]);
     if (tiles[map[7][0]][3] === 1) drawSide(freeBoard.rows[0].cells[0], [ 1, 0]);
+}
+
+
+function setAnimation(animate = true){
+    for (let row = 0; row<7; row++) {
+        for (let col = 0; col < 7; col++) {
+            if (animate) {
+                board.rows[row].cells[col].classList.add("animate");
+            } else board.rows[row].cells[col].classList.remove("animate");
+        }
+    }
 }
 
 
@@ -210,12 +224,12 @@ function rotate(){
     // Visually rotate
     let rotation = 0;
     if (freeBoard.style.transform.match(/\d+/g)) {
-     rotation = freeBoard.style.transform.match(/\d+/g).map(function(v) { return Number(v); });
- }
- rotation = Number(rotation) + 90;
- if (rotation+90 == Infinity) rotation = 0;
+       rotation = freeBoard.style.transform.match(/\d+/g).map(function(v) { return Number(v); });
+   }
+   rotation = Number(rotation) + 90;
+   if (rotation+90 == Infinity) rotation = 0;
 
- freeBoard.style.transform = "rotate(" + rotation + "deg)";
+   freeBoard.style.transform = "rotate(" + rotation + "deg)";
 
     // Logically rotate
     let temp = tiles[map[7][0]][0];
@@ -245,23 +259,86 @@ function setInsertionListener(dragPoints){
     } 
 }
 
-function moveCheck(){
+function moveCheck(e){
     if (canInsert){
-        console.log("Inserted");
-        put();
+        let rowIndex, colIndex;
+
+        // If false, columns will be pushed
+        let rowToBePushed = true;
+        // True: positive, false:negative
+        let direction;
+
+        colIndex = e.currentTarget.cellIndex; 
+
+        direction = !colIndex;
+
+        if (e.currentTarget.classList.contains("row-0")) {
+            rowIndex = 0; 
+            rowToBePushed = false;
+            direction = true;
+        } else if (e.currentTarget.classList.contains("row-1")) {
+            rowIndex = 1; 
+        } else if (e.currentTarget.classList.contains("row-3")) {
+            rowIndex = 3; 
+        } else if (e.currentTarget.classList.contains("row-5")) {
+            rowIndex = 5; 
+        } else if (e.currentTarget.classList.contains("row-6")) {
+            rowIndex = 6; 
+            rowToBePushed = false;
+        } 
+
+        put(rowIndex, colIndex, rowToBePushed, direction);
     }
 }
 
-function put(){
-    // Visually move tiles
+function put(row, col, rowToBePushed, direction){
+    let step="-100%";
+    let loopDir = 1; 
+    var temp;
 
-    //Logically move tiles
+    if (direction) {
+        step = "100%";
+        loopDir = -1;
+    }
+
+    if (rowToBePushed){
+        temp = [map[row][0],map[row][6]]; 
+
+        for (let i = 3*(1-loopDir); Math.abs(i-3)<4; i += loopDir){
+            // Visually move tiles
+            board.rows[row].cells[i].style.transform = "translateX(" + step + ")";
+
+            // Logically move tiles
+            if (i=== 3*(1+loopDir)) {
+                map[row][3*(1+loopDir)] = map [7][0];
+                map[7][0] = temp[(1-loopDir)/2]; 
+            } else map[row][i] = map[row][i + loopDir];
+        }
+    } else {
+        temp = [map[0][col],map[6][col]]; 
+        for (let i = 3*(1-loopDir); Math.abs(i-3)<4; i += loopDir){
+            // Visually move tiles
+            board.rows[i].cells[col].style.transform = "translateY(" + step + ")";
+
+            // Logically move tiles
+            if (i=== 3*(1+loopDir)) {
+                map[3*(1+loopDir)][col] = map [7][0];
+                map[7][0] = temp[(1-loopDir)/2]; 
+            } else map[i][col] = map[i + loopDir][col];
+        }
+    }
+
+
+    setTimeout(noAnimationRedraw, 300);
 
     // Proceeding to the next issue in game flow
     changeGameFlow("step");
-    /*
-    canStep = true;
-    canInsert = false;*/
+}
+
+function noAnimationRedraw(){
+    setAnimation(false);
+    reDraw();
+    setTimeout(setAnimation, 300);
 }
 
 function startGame(player){
@@ -349,6 +426,8 @@ function controllGame(keyPressed){
 // *********************************** MAIN *********************************
 reDraw();
 
+setAnimation(true);
+
 setPlayers(playerNum);
 
 document.onkeydown = checkKey;
@@ -358,3 +437,5 @@ setInsertionListener(dragPoints);
 startGame();
 
 // STANDING ON THE SAME SPOT BUG HANDLING! 
+
+console.log("Delete 'Menu'");

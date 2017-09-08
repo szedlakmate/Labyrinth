@@ -36,7 +36,6 @@ h1 {
 	padding: 0;
 	margin: 0;
 	table-layout: fixed;
-	display: inline-table;
 	border-spacing: 0px;
 }
 
@@ -52,7 +51,11 @@ h1 {
 
 .mazeTile {
 	margin: 0;
-	padding: 0;
+	padding: 0; 
+}
+
+.animate {
+	transition: all 0.3s;
 }
 
 #origin {
