@@ -7,22 +7,24 @@
 </head>
 <body>
 	<h1>Labirinth</h1>
-	<span>Menu</span> <span id="insert">Insert tile</span> <span id="step">Step</span>
+	<div>
+	<span>Actual player: </span> <button id="playerColor"></button> <span id="insert">Insert tile</span> <span id="step">Step</span>
+	</div>
 	<div class="obj-wrapper">
 		<table id="board">
 			<tr>
 				<td class="mazeTile row-0">
 					<div id="origin">
-						<div id="green" class="player"> 
+						<div id="green" class="player animate"> 
 							<div class="center">◉</div>
 						</div>
-						<div id="red" class="player"> 
+						<div id="red" class="player animate"> 
 							<div class="center">◉</div>
 						</div>
-						<div id="blue" class="player">
+						<div id="blue" class="player animate">
 							<div class="center">◉</div>
 						</div>
-						<div id="yellow" class="player"> 
+						<div id="yellow" class="player animate"> 
 							<div class="center">◉</div>
 						</div>
 					</div>

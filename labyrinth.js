@@ -13,6 +13,9 @@ document.querySelector("#red"), document.querySelector("#blue")];
 // texts
 var insertText = document.querySelector("#insert");
 var stepText = document.querySelector("#step");
+var playerSign = document.querySelector("#playerColor");
+
+var playerColors = ["green", "yellow", "red", "blue"];
 
 // Mapping the tiles to the board
 // Modifying the table should be handled here. Furthermore the table is set to be a constant.
@@ -46,7 +49,7 @@ const movingTiles = [[1,0,1,0,null],[0,1,0,1,null],[1,0,0,0,null],[1,0,0,1,null]
 [0,1,0,1,null],[1,0,0,1,null],[1,0,1,0,null],[1,0,1,0,null]];
 
 // Combined tiles for mapping
-var tiles = fixedTiles.concat(shuffle(rotateRandom(movingTiles)));
+var tiles = fixedTiles.concat(shuffleArray(rotateRandom(movingTiles)));
 
 // Game controller variable
 var endGame = false;
@@ -61,23 +64,16 @@ var playerTurn = 0;
 // Coordinates of the players on the 7x7 board
 var playerCoords = [[0, 0], [6, 0], [6, 6], [0, 6]];
 
-// Controlls keyread behavior *************************************** WRRRRRROOOOOOOOOOOONNNNNNNNNGGGGGGGGG
+// Game logic variables
 var canStep = false;
-
-// Controlls insrertion behavior
 var canInsert = false;
-
-//******************************************************
-
 
 // Mapping for key events
 var keyMap = {37:"left", 38:"up", 39:"right", 40:"down", 13:"enter", 82:"r", 27:"esc"};
 
 
-// Setting players startes position
+// Setting up players
 function setPlayers(playerNum){
-    //let starterPosX = 0, starterPosY = 0;
-
     drawPlayer(0);
     if (playerNum<2) return;
     drawPlayer(1);
@@ -196,7 +192,7 @@ function setAnimation(animate = true){
 }
 
 
-function shuffle(array) {
+function shuffleArray(array) {
     // Knuth shuffle from https://github.com/Daplie/knuth-shuffle
     let currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -365,14 +361,17 @@ function startGame(player){
 
 function changeGameFlow(command){
     switch (command){
+        // Finishing player's turn by stepping and setting the enviroment for next player's insertion
         case "insert":
         playerTurn++;
+        playerSign.style.backgroundColor = playerColors[playerTurn%playerNum];
         canStep = false;
         canInsert = true;
         insertText.classList.add("selected");
         stepText.classList.remove("selected");
         break;
 
+        // After insertion setting up game for stepping
         case "step":
         canStep = true;
         canInsert = false;
@@ -430,11 +429,10 @@ function initalizeGame(){
     // Initalizing game logic
     startGame();
 
-    // Notes
-    console.log("Delete 'Menu'");
-    //
-    // STANDING ON THE SAME SPOT BUG HANDLING! 
-    //
+    /* Notes
+
+        STANDING ON THE SAME SPOT BUG HANDLING! 
+    */
 }
 
 
