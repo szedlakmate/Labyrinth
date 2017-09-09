@@ -1,20 +1,37 @@
-*{
-	background-color: rgba(255,190,0,0.15);
-}
-
 body{
 	font-family: "Montserrat", "Avenir", sans-serif;
 	font-weight: normal;
 	margin: 0;
-	text-align: center
+	text-align: center;
+
+	
+	/* Source: 
+	https://www.google.com/imgres?imgurl=https%3A%2F%2Fstatic.pexels.com%2Fphotos%2F38136%2Fpexels-photo-38136.jpeg&imgrefurl=https%3A%2F%2Fwww.pexels.com%2Fsearch%2Fforest%2F&docid=BC4_f5opwORgnM&tbnid=mx_U_HXa0sbp_M%3A&vet=10ahUKEwjEmc68p5jWAhUPEVAKHQ1NCIIQMwjqASgEMAQ..i&w=5760&h=3840&bih=759&biw=1536&q=forest&ved=0ahUKEwjEmc68p5jWAhUPEVAKHQ1NCIIQMwjqASgEMAQ&iact=mrc&uact=8;
+	*/
+	background-image: url('forest.jpeg');
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+	background-size: cover;
+	overflow: hidden;
+}
+
+.header {
+	top: 0;
+	margin-top: 0;
+	background-color: rgba(0, 79, 23, 0.95);
 }
 
 h1 {
 	text-align: center;
+	margin: 0 auto;
+	padding: 10px 0 10px 0;
+	color: white;
 }
 
 span {
 	margin: auto 0 0 5%;
+	color: white;
 }
 
 
@@ -39,7 +56,7 @@ span {
 .obj-wrapper {
 	position:relative;
 	width:100%;
-	padding-bottom:30%;
+	padding-bottom: 40%;
 	height:0;
 	overflow:hidden;
 	margin: 0;
@@ -50,19 +67,25 @@ span {
 	left: 50%;
 	transform: translateX(-50%);
 	width: 30%;
-	height: 100%;
+	height: 75%;
 	padding: 0;
 	margin: 0;
 	table-layout: fixed;
 	border-spacing: 0px;
+
+	top: 10%;
+
+	background-color: rgba(244, 228, 46, 0.9);
 }
 
 #free {
 	position: absolute;
 	left: 78%;
+	top: 10%;
 	width: calc(30%/7);
-	height: calc(100%/7);
+	height: calc(100%/7*0.75);
 	padding: 0; 
+	background-color: rgba(244, 228, 46, 0.9);
 }
 
 .mazeTile {
