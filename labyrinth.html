@@ -7,43 +7,12 @@
 </head>
 <body>
 	<h1>Labirinth</h1>
-	<span>Menu</span>
+	<span>Menu</span> <span id="insert">Insert tile</span> <span id="step">Step</span>
 	<div class="obj-wrapper">
 		<table id="board">
 			<tr>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-			</tr>
-			<tr>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-			</tr>
-			<tr>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-			</tr>
-			<tr>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile">
+				<td class="mazeTile row-0">
 					<div id="origin">
-
 						<div id="green" class="player"> 
 							<div class="center">◉</div>
 						</div>
@@ -56,12 +25,23 @@
 						<div id="yellow" class="player"> 
 							<div class="center">◉</div>
 						</div>
-						
 					</div>
 				</td>
+				<td class="mazeTile row-0"><div></div></td>
+				<td class="mazeTile row-0"><div></div></td>
+				<td class="mazeTile row-0"><div></div></td>
+				<td class="mazeTile row-0"><div></div></td>
+				<td class="mazeTile row-0"><div></div></td>
+				<td class="mazeTile row-0"><div></div></td>
+			</tr>
+			<tr>
+				<td class="mazeTile row-1"><div></div></td>
 				<td class="mazeTile"><div></div></td>
 				<td class="mazeTile"><div></div></td>
 				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile row-1"><div></div></td>
 			</tr>
 			<tr>
 				<td class="mazeTile"><div></div></td>
@@ -73,13 +53,13 @@
 				<td class="mazeTile"><div></div></td>
 			</tr>
 			<tr>
+				<td class="mazeTile row-3"><div></div></td>
 				<td class="mazeTile"><div></div></td>
 				<td class="mazeTile"><div></div></td>
 				<td class="mazeTile"><div></div></td>
 				<td class="mazeTile"><div></div></td>
 				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
-				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile row-3"><div></div></td>
 			</tr>
 			<tr>
 				<td class="mazeTile"><div></div></td>
@@ -89,11 +69,29 @@
 				<td class="mazeTile"><div></div></td>
 				<td class="mazeTile"><div></div></td>
 				<td class="mazeTile"><div></div></td>
+			</tr>
+			<tr>
+				<td class="mazeTile row-5"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile"><div></div></td>
+				<td class="mazeTile row-5"><div></div></td>
+			</tr>
+			<tr>
+				<td class="mazeTile row-6"><div></div></td>
+				<td class="mazeTile row-6"><div></div></td>
+				<td class="mazeTile row-6"><div></div></td>
+				<td class="mazeTile row-6"><div></div></td>
+				<td class="mazeTile row-6"><div></div></td>
+				<td class="mazeTile row-6"><div></div></td>
+				<td class="mazeTile row-6"><div></div></td>
 			</tr>
 		</table>
 		<table id="free">
 			<tr>
-				<td><div class="freeTile"></td>
+				<td class="freeTile"><div></td>
 			</tr>
 		</table>
 	</div>

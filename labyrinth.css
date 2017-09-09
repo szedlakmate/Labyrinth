@@ -13,6 +13,10 @@ h1 {
 	text-align: center;
 }
 
+.selected {
+	font-weight: bold;
+}
+
 
 .obj-wrapper {
 	position:relative;
@@ -32,24 +36,24 @@ h1 {
 	padding: 0;
 	margin: 0;
 	table-layout: fixed;
-	display: inline-table;
 	border-spacing: 0px;
 }
 
 #free {
 	position: absolute;
-	left: 80%;
-	transform: translateX(-50%);
+	left: 78%;
 	width: calc(30%/7);
 	height: calc(100%/7);
-	padding: 0;
-	table-layout: fixed;
-	transition: all 0.3s; 
+	padding: 0; 
 }
 
 .mazeTile {
 	margin: 0;
-	padding: 0;
+	padding: 0; 
+}
+
+.animate {
+	transition: all 0.3s;
 }
 
 #origin {
@@ -66,6 +70,8 @@ h1 {
 	width: 100%;
 	height: 100%;
 	position: absolute;
+	pointer-events: none;
+	
 	transition: all 0.3s; 
 }
 
