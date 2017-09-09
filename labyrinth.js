@@ -8,10 +8,8 @@
 var board = document.getElementById("board");
 var freeBoard = document.getElementById("free");
 // players
-var green = document.querySelector("#green");
-var yellow = document.querySelector("#yellow");
-var red = document.querySelector("#red");
-var blue = document.querySelector("#blue");
+var players = [document.querySelector("#green"), document.querySelector("#yellow"), 
+document.querySelector("#red"), document.querySelector("#blue")];
 // texts
 var insertText = document.querySelector("#insert");
 var stepText = document.querySelector("#step");
@@ -27,7 +25,7 @@ var map = [[0, 16, 1, 17, 2, 18, 3],
 [12, 46, 13, 47, 14, 48, 15],
 [49]];
 
-// Defining possible insertionpoints for the free tile 
+// Defining possible insertionpoints for the free tile --- "row-col"
 const dragPoints = ["0-1","0-3","0-5","1-0","1-6","3-0","3-6","5-0","5-6","6-1","6-3","6-5"];
 
 // Fixed tiles of the original game
@@ -61,7 +59,7 @@ var playerNum = 4;
 var playerTurn = 0;
 
 // Coordinates of the players on the 7x7 board
-var playerCoords = [[0,0],[6,0],[6,6],[0,6]];
+var playerCoords = [[0, 0], [6, 0], [6, 6], [0, 6]];
 
 // Controlls keyread behavior *************************************** WRRRRRROOOOOOOOOOOONNNNNNNNNGGGGGGGGG
 var canStep = false;
@@ -77,37 +75,31 @@ var keyMap = {37:"left", 38:"up", 39:"right", 40:"down", 13:"enter", 82:"r", 27:
 
 
 // Setting players startes position
-function setPlayers(players){
-    let starterPosX = 3, starterPosY = 3;
+function setPlayers(playerNum){
+    //let starterPosX = 0, starterPosY = 0;
 
-    stepDirection(green, playerCoords[0][0]-starterPosX, playerCoords[0][1]-starterPosY);
-    if (players<2) return;
+    drawPlayer(0);
+    if (playerNum<2) return;
+    drawPlayer(1);
 
-    stepDirection(yellow, playerCoords[1][0]-starterPosX, playerCoords[1][1]-starterPosY);
-    if (players<3) return;
+    if (playerNum<3) return;
+    drawPlayer(2);
 
-    stepDirection(red, playerCoords[2][0]-starterPosX, playerCoords[2][1]-starterPosY);
-    if (players<4) return;
-
-    stepDirection(blue, playerCoords[3][0]-starterPosX, playerCoords[3][1]-starterPosY);
+    if (playerNum<4) return;
+    drawPlayer(3);
 }
 
 // Moving HTML elements
-function stepDirection(element, dx, dy){
+function drawPlayer(actualPlayer){
     let baseScaleX = 100, baseScaleY= 100; 
-    // Current translation values
-    let shift = [0,0];
-    if (element.style.transform.match(/[+-]?\d+(\.\d+)?/g)) {
-     shift = element.style.transform.match(/[+-]?\d+(\.\d+)?/g).map(function(v) { return parseFloat(v); });
- }
 
- element.style.transform = "translate(" + (shift[0]+ dx*baseScaleX) + "%, " + (shift[1] + dy*baseScaleY) + "%)";
- return element.style.transform;
+    players[actualPlayer].style.transform = "translate(" + (/*shift[0]+*/ playerCoords[actualPlayer][0]*baseScaleX) + "%, " + (/*shift[1] +*/ playerCoords[actualPlayer][1]*baseScaleY) + "%)";
+    return players[actualPlayer].style.transform;
 }
 
 // Check whether a step is legal or not. 
 // If thestep is possible, makes is happen and returns true, if not, it returns false.
-function checkStep(playerHTML, actualPlayer, dx, dy, maxCoord = 6){
+function checkStep(actualPlayer, dx, dy, maxCoord = 6){
     let direction;
     switch (dx+dy*3){
         case -1:
@@ -139,7 +131,7 @@ function checkStep(playerHTML, actualPlayer, dx, dy, maxCoord = 6){
 
             playerCoords[actualPlayer][0] += dx;
         playerCoords[actualPlayer][1] += dy;
-        stepDirection(playerHTML, dx, dy);
+        drawPlayer(actualPlayer);
         return true;
     }
 }
@@ -223,20 +215,21 @@ function shuffle(array) {
 
 function rotateRandom(array){
     // Should randomly rotate the tiles !!! NEED TO BE FIXED
+    console.log("Randomized batch rotation is not implemented yet");
     return array
 }
 
 // Rotating free tile clockwise
-function rotate(){
+function rotateFreeTile(){
     // Visually rotate
     let rotation = 0;
     if (freeBoard.rows[0].cells[0].style.transform.match(/\d+/g)) {
-     rotation = freeBoard.rows[0].cells[0].style.transform.match(/\d+/g).map(function(v) { return Number(v); });
- }
- rotation = Number(rotation) + 90;
- if (rotation+90 == Infinity) rotation = 0;
+       rotation = freeBoard.rows[0].cells[0].style.transform.match(/\d+/g).map(function(v) { return Number(v); });
+   }
+   rotation = Number(rotation) + 90;
+   if (rotation+90 == Infinity) rotation = 0;
 
- freeBoard.rows[0].cells[0].style.transform = "rotate(" + rotation + "deg)";
+   freeBoard.rows[0].cells[0].style.transform = "rotate(" + rotation + "deg)";
 
     // Logically rotate
     let temp = tiles[map[7][0]][0];
@@ -333,6 +326,23 @@ function put(row, col, rowToBePushed, direction){
         }
     }
 
+    for (let i=0; i<4; i++){
+        if (rowToBePushed){
+            if (row === playerCoords[i][1]){
+                playerCoords[i][0] -= loopDir;
+                playerCoords[i][0] = (playerCoords[i][0]+7) % 7;
+                drawPlayer(i);
+            }
+
+        } else {
+            if (col === playerCoords[i][0]){
+                playerCoords[i][1] -= loopDir;
+                playerCoords[i][1] = (playerCoords[i][1]+7) % 7;
+                drawPlayer(i);
+            }
+        }
+
+    }
 
     setTimeout(noAnimationRedraw, 300);
 
@@ -340,10 +350,10 @@ function put(row, col, rowToBePushed, direction){
     changeGameFlow("step");
 }
 
-function noAnimationRedraw(){
+function noAnimationRedraw(time = 300){
     setAnimation(false);
     reDraw();
-    setTimeout(setAnimation, 300);
+    setTimeout(setAnimation, time);
 }
 
 function startGame(player){
@@ -379,40 +389,21 @@ function changeGameFlow(command){
 
 
 function controllGame(keyPressed){
-    let player;
-    switch (playerTurn%playerNum){
-        case 0:
-        player = green;
-        break;
-
-        case 1:
-        player = yellow;
-        break;
-
-        case 2:
-        player = red;
-        break;
-
-        case 3:
-        player = blue;
-        break;
-    }
-
     switch (keyPressed){
         case "up":
-        if (canStep) checkStep(player, playerTurn%playerNum, 0, -1);
+        if (canStep) checkStep(playerTurn%playerNum, 0, -1);
         break;
 
         case "down":
-        if (canStep) checkStep(player, playerTurn%playerNum, 0, 1);
+        if (canStep) checkStep(playerTurn%playerNum, 0, 1);
         break;
 
         case "left":
-        if (canStep) checkStep(player, playerTurn%playerNum, -1, 0);
+        if (canStep) checkStep(playerTurn%playerNum, -1, 0);
         break;
 
         case "right":
-        if (canStep) checkStep(player, playerTurn%playerNum, 1, 0);
+        if (canStep) checkStep(playerTurn%playerNum, 1, 0);
         break;
 
         case "enter":
@@ -420,28 +411,32 @@ function controllGame(keyPressed){
         break;
 
         case "r":
-        if (canInsert) rotate();
+        if (canInsert) rotateFreeTile();
         break;
     }
-
-    return player;
-
+    //return player;
 }
 
+function initalizeGame(){
+    // Drawing
+    reDraw();
+    setAnimation(true);
+    setPlayers(playerNum);
+
+    // Setting listeners
+    document.onkeydown = checkKey;
+    setInsertionListener(dragPoints);
+
+    // Initalizing game logic
+    startGame();
+
+    // Notes
+    console.log("Delete 'Menu'");
+    //
+    // STANDING ON THE SAME SPOT BUG HANDLING! 
+    //
+}
+
+
 // *********************************** MAIN *********************************
-reDraw();
-
-setAnimation(true);
-
-setPlayers(playerNum);
-
-document.onkeydown = checkKey;
-
-setInsertionListener(dragPoints);
-
-startGame();
-
-// STANDING ON THE SAME SPOT BUG HANDLING! 
-
-console.log("Delete 'Menu'");
-console.log("Implement the animateclass togle for freeTile");
+initalizeGame();
