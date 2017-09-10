@@ -1,5 +1,5 @@
 // **************** //
-//  Labirinth Game  //
+//  Labyrinth Game  //
 // **************** //
 
 function Labyrinth (playerNum = 4) {
