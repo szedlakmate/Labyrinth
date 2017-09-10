@@ -168,7 +168,7 @@ function reDraw() {
     } 
 
     // Drawing walls on the free tile
-    freeBoard.rows[0].cells[0].style.transform = "";
+    freeBoard.style.transform = "";
     freeBoard.rows[0].cells[0].style.boxShadow = "";
 
     if (tiles[map[7][0]][0] === 1) drawSide(freeBoard.rows[0].cells[0], [ 0, 1]);
@@ -187,8 +187,8 @@ function setAnimation(animate = true){
         }
     }
     if (animate) {
-        freeBoard.rows[0].cells[0].classList.add("animate");
-    } else freeBoard.rows[0].cells[0].classList.remove("animate");
+        freeBoard.classList.add("animate");
+    } else freeBoard.classList.remove("animate");
 }
 
 
@@ -219,13 +219,13 @@ function rotateRandom(array){
 function rotateFreeTile(){
     // Visually rotate
     let rotation = 0;
-    if (freeBoard.rows[0].cells[0].style.transform.match(/\d+/g)) {
-       rotation = freeBoard.rows[0].cells[0].style.transform.match(/\d+/g).map(function(v) { return Number(v); });
+    if (freeBoard.style.transform.match(/\d+/g)) {
+       rotation = freeBoard.style.transform.match(/\d+/g).map(function(v) { return Number(v); });
    }
    rotation = Number(rotation) + 90;
-   if (rotation+90 == Infinity) rotation = 0;
+   if (rotation+180 == Infinity) rotation = 0;
 
-   freeBoard.rows[0].cells[0].style.transform = "rotate(" + rotation + "deg)";
+   freeBoard.style.transform = "rotate(" + rotation + "deg)";
 
     // Logically rotate
     let temp = tiles[map[7][0]][0];

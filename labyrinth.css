@@ -8,6 +8,7 @@ body{
 	/* Source: 
 	https://www.google.com/imgres?imgurl=https%3A%2F%2Fstatic.pexels.com%2Fphotos%2F38136%2Fpexels-photo-38136.jpeg&imgrefurl=https%3A%2F%2Fwww.pexels.com%2Fsearch%2Fforest%2F&docid=BC4_f5opwORgnM&tbnid=mx_U_HXa0sbp_M%3A&vet=10ahUKEwjEmc68p5jWAhUPEVAKHQ1NCIIQMwjqASgEMAQ..i&w=5760&h=3840&bih=759&biw=1536&q=forest&ved=0ahUKEwjEmc68p5jWAhUPEVAKHQ1NCIIQMwjqASgEMAQ&iact=mrc&uact=8;
 	*/
+	background-color: rgb(0, 79, 23);
 	background-image: url('forest.jpg');
 	background-repeat: no-repeat;
 	background-attachment: fixed;
@@ -41,14 +42,18 @@ h1 {
 }
 
 span {
-	margin: auto 0 0 5%;
 	color: white;
+}
+
+.left-margin {
+	margin: auto 0 0 5%;
 }
 
 
 
 .selected {
 	font-weight: 900;
+	text-decoration: underline;
 }
 
 #playerColor {
