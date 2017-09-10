@@ -4,9 +4,10 @@
 
 
 // Selectors for the board table, the free-tile-cell and the players' figures
-// tables
+// tables and cells
 var board = document.getElementById("board");
 var freeBoard = document.getElementById("free");
+var insertable = document.querySelectorAll(".insertable");
 // players
 var players = [document.querySelector("#green"), document.querySelector("#yellow"), 
 document.querySelector("#red"), document.querySelector("#blue")];
@@ -71,6 +72,8 @@ var canInsert = false;
 // Mapping for key events
 var keyMap = {37:"left", 38:"up", 39:"right", 40:"down", 13:"enter", 82:"r", 27:"esc"};
 
+// Global variable for  animation controlling
+var animation;
 
 // Setting up players
 function setPlayers(playerNum){
@@ -251,6 +254,7 @@ function setInsertionListener(dragPoints){
             }
         }
     } 
+    freeBoard.addEventListener("click", function () {controllGame("r");});
 }
 
 function moveCheck(e){
@@ -359,6 +363,13 @@ function startGame(player){
     insertText.classList.add("selected");
 }
 
+function animateInsertion(time = 500) {
+    for (let i=0; i<insertable.length; i++) {
+        insertable[i].classList.add("insert");
+        setTimeout(function() {insertable[i].classList.remove("insert");}, time);
+    }
+}
+
 function changeGameFlow(command){
     switch (command){
         // Finishing player's turn by stepping and setting the enviroment for next player's insertion
@@ -369,6 +380,8 @@ function changeGameFlow(command){
         canInsert = true;
         insertText.classList.add("selected");
         stepText.classList.remove("selected");
+        animateInsertion();
+        animation = setInterval(animateInsertion, 3000);
         break;
 
         // After insertion setting up game for stepping
@@ -377,6 +390,7 @@ function changeGameFlow(command){
         canInsert = false;
         insertText.classList.remove("selected");
         stepText.classList.add("selected");
+        clearInterval(animation);
         break;
 
         default:
@@ -429,10 +443,13 @@ function initalizeGame(){
     // Initalizing game logic
     startGame();
 
+    animateInsertion();
+    animation = setInterval(animateInsertion, 3000);
+
     /* Notes
 
         STANDING ON THE SAME SPOT BUG HANDLING! 
-    */
+        */
 }
 
 

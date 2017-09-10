@@ -94,6 +94,10 @@ span {
 	background-color: rgba(244, 228, 46, 0.9);
 }
 
+.insert {
+	background-color: rgba(196, 183, 37, 1.0);
+}
+
 #free {
 	position: absolute;
 	left: 78%;
