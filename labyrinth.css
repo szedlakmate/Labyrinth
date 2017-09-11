@@ -90,8 +90,6 @@ span {
 	border-spacing: 0px;
 
 	top: 10%;
-
-	background-color: rgba(244, 228, 46, 0.9);
 }
 
 .insert {
@@ -111,6 +109,7 @@ span {
 .mazeTile {
 	margin: 0;
 	padding: 0; 
+	background-color: rgba(244, 228, 46, 0.9);
 }
 
 .animate {
