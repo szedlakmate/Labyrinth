@@ -7,4 +7,5 @@ Known bugs:
 - The player sizes are not responsive
 - If players cover each other, one will be perfectly hidden
 - The lack of touchscreen support
-- The lack of browser compatibility check
+
+Furthermore, browser compatibility check needs to be undertaken.
