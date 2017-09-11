@@ -373,6 +373,7 @@ function Labyrinth (playerNum = 4) {
     function animateInsertion(time = 500) {
         for (let i=0; i<insertable.length; i++) {
             insertable[i].classList.add("insert");
+            //debugger;
             setTimeout(function() {insertable[i].classList.remove("insert");}, time);
         }
     }
