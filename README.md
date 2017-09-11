@@ -5,9 +5,9 @@ Checked compatibility:
 - Chrome 61+
 - Firefox 55+
 - MS Edge 40+
+- Internet Explorer 11+ (with small UI bugs)
 
 Not working with:
-- Internet Explorer
 - Safari
 
 Known bugs:

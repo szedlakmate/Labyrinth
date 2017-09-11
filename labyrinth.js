@@ -2,7 +2,8 @@
 //  Labyrinth Game  //
 // **************** //
 
-function Labyrinth (playerNum = 4) {
+function Labyrinth (playerNum /*= 4*/) {
+    if (!playerNum) playerNum = 4;
 
     // Selectors for the board table, the free-tile-cell and the players' figures
     // tables and cells
@@ -77,7 +78,7 @@ function Labyrinth (playerNum = 4) {
     var animation;
 
     // Setting up players
-    function setPlayers(playerNum){
+    function setPlayers(playerNum) {
         drawPlayer(0);
         if (playerNum<2) return;
         drawPlayer(1);
@@ -90,7 +91,7 @@ function Labyrinth (playerNum = 4) {
     }
 
     // Moving HTML elements
-    function drawPlayer(actualPlayer){
+    function drawPlayer(actualPlayer) {
         let baseScaleX = 100, baseScaleY= 100; 
 
         players[actualPlayer].style.transform = "translateX(" + (playerCoords[actualPlayer][0]*baseScaleX) + "%) translateY(" + (/*shift[1] +*/ playerCoords[actualPlayer][1]*baseScaleY) + "%)";
@@ -99,9 +100,10 @@ function Labyrinth (playerNum = 4) {
 
     // Check whether a step is legal or not. 
     // If thestep is possible, makes is happen and returns true, if not, it returns false.
-    function checkStep(actualPlayer, dx, dy, maxCoord = 6){
+    function checkStep(actualPlayer, dx, dy, maxCoord /*= 6*/) {
+        if (!maxCoord) maxCoord = 6;
         let direction;
-        switch (dx+dy*3){
+        switch (dx+dy*3) {
             case -1:
             direction = 3;
             break;
@@ -122,7 +124,7 @@ function Labyrinth (playerNum = 4) {
         // Conditions:
         // Are we still on the board?
         if  ((playerCoords[actualPlayer][0] + dx <= maxCoord) && (playerCoords[actualPlayer][0] + dx >= 0) && 
-            (playerCoords[actualPlayer][1] + dy <= maxCoord) && (playerCoords[actualPlayer][1] + dy >= 0)){  
+            (playerCoords[actualPlayer][1] + dy <= maxCoord) && (playerCoords[actualPlayer][1] + dy >= 0)) {  
             // Is it possible to leave the tile?
             // Is itt possible to arrive to the desired tile X/Y-dir?      
             if ((tiles[map[playerCoords[actualPlayer][1]][playerCoords[actualPlayer][0]]][direction]===0) &&
@@ -138,17 +140,19 @@ function Labyrinth (playerNum = 4) {
     return false;
     }
 
-    function drawCellGrid(cell, color = "rgba(229, 229, 229, 0.75)"){
+    function drawCellGrid(cell, color /*= "rgba(229, 229, 229, 0.75)"*/) {
+        if (!color) color = "rgba(229, 229, 229, 0.75)";
         cell.style.boxShadow = color + " 1px 0px 0px inset, " + color + " 0px 1px 0px inset, " + color + " -1px 0px 0px inset, " + color + " 0px -1px 0px inset";
     }
 
 
-    function drawSide(cell, side, color = "rgb(0, 0, 0)") {
+    function drawSide(cell, side, color /*= "rgb(0, 0, 0)"*/) {
         // side: [0, -1] => [+left-right, +top-bottom] 
 
+        if (!color) color = "rgb(0, 0, 0)";
         let borderWidth = 5; //px
 
-        if (!cell.style.boxShadow){
+        if (!cell.style.boxShadow) {
             cell.style.boxShadow = color + " " + side[0]*borderWidth + "px " + side[1]*borderWidth + "px " + "0px inset";
         } else {
             cell.style.boxShadow += ", "+ color + " " + side[0]*borderWidth + "px " + side[1]*borderWidth + "px " + "0px inset";
@@ -182,7 +186,8 @@ function Labyrinth (playerNum = 4) {
     }
 
 
-    function setAnimation(animate = true){
+    function setAnimation(animate /*= true*/) {
+        if (typeof(animate) != "undefined") animate = true;
         for (let row = 0; row<7; row++) {
             for (let col = 0; col < 7; col++) {
                 if (animate) {
@@ -214,14 +219,14 @@ function Labyrinth (playerNum = 4) {
         return array;
     }
 
-    function rotateRandom(array){
+    function rotateRandom(array) {
         // Should randomly rotate the tiles !!! NEED TO BE FIXED
         console.log("Randomized batch rotation is not implemented yet");
         return array
     }
 
     // Rotating free tile clockwise
-    function rotateFreeTile(){
+    function rotateFreeTile() {
         // Visually rotate
         let rotation = 0;
         if (freeBoard.style.transform.match(/\d+/g)) {
@@ -247,7 +252,7 @@ function Labyrinth (playerNum = 4) {
     }
 
     // Listener for insertion points
-    function setInsertionListener(dragPoints){
+    function setInsertionListener(dragPoints) {
         for (let row = 0; row<7; row++) {
             for (let col = 0; col < 7; col++) {
                 // Setting uplistener for inserting tile
@@ -259,8 +264,8 @@ function Labyrinth (playerNum = 4) {
         freeBoard.addEventListener("click", function () {controllGame("r");});
     }
 
-    function moveCheck(e){
-        if (canInsert){
+    function moveCheck(e) {
+        if (canInsert) {
             // Hiding inserted element
             freeBoard.style.visibility = "hidden";
 
@@ -294,7 +299,7 @@ function Labyrinth (playerNum = 4) {
         }
     }
 
-    function put(row, col, rowToBePushed, direction){
+    function put(row, col, rowToBePushed, direction) {
         let step="-100%";
         let loopDir = 1; 
         var temp;
@@ -304,10 +309,10 @@ function Labyrinth (playerNum = 4) {
             loopDir = -1;
         }
 
-        if (rowToBePushed){
+        if (rowToBePushed) {
             temp = [map[row][0],map[row][6]]; 
 
-            for (let i = 3*(1-loopDir); Math.abs(i-3)<4; i += loopDir){
+            for (let i = 3*(1-loopDir); Math.abs(i-3)<4; i += loopDir) {
                 // Visually move tiles
                 board.rows[row].cells[i].style.transform = "translateX(" + step + ")";
 
@@ -319,7 +324,7 @@ function Labyrinth (playerNum = 4) {
             }
         } else {
             temp = [map[0][col],map[6][col]]; 
-            for (let i = 3*(1-loopDir); Math.abs(i-3)<4; i += loopDir){
+            for (let i = 3*(1-loopDir); Math.abs(i-3)<4; i += loopDir) {
                 // Visually move tiles
                 board.rows[i].cells[col].style.transform = "translateY(" + step + ")";
 
@@ -331,16 +336,16 @@ function Labyrinth (playerNum = 4) {
             }
         }
 
-        for (let i=0; i<4; i++){
-            if (rowToBePushed){
-                if (row === playerCoords[i][1]){
+        for (let i=0; i<4; i++) {
+            if (rowToBePushed) {
+                if (row === playerCoords[i][1]) {
                     playerCoords[i][0] -= loopDir;
                     playerCoords[i][0] = (playerCoords[i][0]+7) % 7;
                     drawPlayer(i);
                 }
 
             } else {
-                if (col === playerCoords[i][0]){
+                if (col === playerCoords[i][0]) {
                     playerCoords[i][1] -= loopDir;
                     playerCoords[i][1] = (playerCoords[i][1]+7) % 7;
                     drawPlayer(i);
@@ -350,27 +355,29 @@ function Labyrinth (playerNum = 4) {
         }
 
         setTimeout(noAnimationRedraw, 300);
-       // setTimeout(function(){freeBoard.style.visibility = "visible";}, 300);
+       // setTimeout(function() {freeBoard.style.visibility = "visible";}, 300);
 
         // Proceeding to the next issue in game flow
         changeGameFlow("step");
     }
 
-    function noAnimationRedraw(time = 300){
+    function noAnimationRedraw(time /*= 300*/) {
+        if (!time) time = 300;
         setAnimation(false);
         reDraw();
         setTimeout(setAnimation, time);
 
     }
 
-    function startGame(player){
+    function startGame(player) {
         // Starting gameplay   
         canInsert = true;
         canStep = false;
         insertText.classList.add("selected");
     }
 
-    function animateInsertion(time = 500) {
+    function animateInsertion(time /*= 500*/) {
+        if (!time) time = 500;
         for (let i=0; i<insertable.length; i++) {
             insertable[i].classList.add("insert");
             //debugger;
@@ -378,8 +385,8 @@ function Labyrinth (playerNum = 4) {
         }
     }
 
-    function changeGameFlow(command){
-        switch (command){
+    function changeGameFlow(command) {
+        switch (command) {
             // Finishing player's turn by stepping and setting the enviroment for next player's insertion
             case "insert":
             playerTurn++;
@@ -399,7 +406,7 @@ function Labyrinth (playerNum = 4) {
             insertText.classList.remove("selected");
             stepText.classList.add("selected");
             clearInterval(animation);
-            //setTimeout(function(){freeBoard.style.visibility = "visible";},300);
+            //setTimeout(function() {freeBoard.style.visibility = "visible";},300);
             break;
 
             default:
@@ -410,8 +417,8 @@ function Labyrinth (playerNum = 4) {
     }
 
 
-    function controllGame(keyPressed){
-        switch (keyPressed){
+    function controllGame(keyPressed) {
+        switch (keyPressed) {
             case "up":
             if (canStep) checkStep(playerTurn%playerNum, 0, -1);
             break;
@@ -443,7 +450,7 @@ function Labyrinth (playerNum = 4) {
         return true;
     }
 
-    this.initalizeGame = function (){
+    this.initalizeGame = function () {
         // Drawing
         reDraw();
         setAnimation(true);
