@@ -11,7 +11,6 @@ Not working with:
 - Safari
 
 Known bugs:
-- The lack of help
 - The lack of collectable treasures in the game (score system)
 - The player sizes are not responsive
 - If players cover each other, one will be perfectly hidden
