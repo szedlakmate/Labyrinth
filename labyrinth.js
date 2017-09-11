@@ -192,6 +192,7 @@ function Labyrinth (playerNum = 4) {
         }
         if (animate) {
             freeBoard.classList.add("animate");
+            freeBoard.style.visibility = "visible";
         } else freeBoard.classList.remove("animate");
     }
 
@@ -260,6 +261,9 @@ function Labyrinth (playerNum = 4) {
 
     function moveCheck(e){
         if (canInsert){
+            // Hiding inserted element
+            freeBoard.style.visibility = "hidden";
+
             let rowIndex, colIndex;
 
             // If false, columns will be pushed
@@ -346,6 +350,7 @@ function Labyrinth (playerNum = 4) {
         }
 
         setTimeout(noAnimationRedraw, 300);
+       // setTimeout(function(){freeBoard.style.visibility = "visible";}, 300);
 
         // Proceeding to the next issue in game flow
         changeGameFlow("step");
@@ -355,6 +360,7 @@ function Labyrinth (playerNum = 4) {
         setAnimation(false);
         reDraw();
         setTimeout(setAnimation, time);
+
     }
 
     function startGame(player){
@@ -392,6 +398,7 @@ function Labyrinth (playerNum = 4) {
             insertText.classList.remove("selected");
             stepText.classList.add("selected");
             clearInterval(animation);
+            //setTimeout(function(){freeBoard.style.visibility = "visible";},300);
             break;
 
             default:
@@ -427,8 +434,12 @@ function Labyrinth (playerNum = 4) {
             case "r":
             if (canInsert) rotateFreeTile();
             break;
+
+            default:
+            return false;
+            break;
         }
-        //return player;
+        return true;
     }
 
     this.initalizeGame = function (){
