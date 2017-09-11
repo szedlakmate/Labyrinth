@@ -93,7 +93,7 @@ function Labyrinth (playerNum = 4) {
     function drawPlayer(actualPlayer){
         let baseScaleX = 100, baseScaleY= 100; 
 
-        players[actualPlayer].style.transform = "translate(" + (/*shift[0]+*/ playerCoords[actualPlayer][0]*baseScaleX) + "%, " + (/*shift[1] +*/ playerCoords[actualPlayer][1]*baseScaleY) + "%)";
+        players[actualPlayer].style.transform = "translateX(" + (playerCoords[actualPlayer][0]*baseScaleX) + "%) translateY(" + (/*shift[1] +*/ playerCoords[actualPlayer][1]*baseScaleY) + "%)";
         return players[actualPlayer].style.transform;
     }
 
