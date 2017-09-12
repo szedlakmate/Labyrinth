@@ -2,8 +2,8 @@
 //  Labyrinth Game  //
 // **************** //
 
-function Labyrinth (playerNum /*= 4*/) {
-    if (!playerNum) playerNum = 4;
+function Labyrinth (/*playerNum*/ /*= 4*/) {
+    /*if (!playerNum) this.playerNum = 4; else this.playerNum = playerNum;*/
 
     // Selectors for the board table, the free-tile-cell and the players' figures
     // tables and cells
