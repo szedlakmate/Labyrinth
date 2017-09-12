@@ -381,7 +381,7 @@ function Labyrinth (playerNum /*= 4*/) {
         for (let i=0; i<insertable.length; i++) {
             insertable[i].classList.add("insert");
             //debugger;
-            setTimeout(function() {insertable[i].classList.remove("insert");}, time);
+            setTimeout(function() {try{insertable[i].classList.remove("insert");}catch(e){console.log(e);}}, time);
         }
     }
 
